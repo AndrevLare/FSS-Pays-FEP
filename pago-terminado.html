@@ -160,8 +160,9 @@
 
     <script>
       const params = new URLSearchParams(window.location.search);
-      const status = (params.get("status") || "").toUpperCase();
-      const reference = params.get("reference") || "";
+      // Bold redirige con: ?bold-order-id=...&bold-tx-status=approved
+      const status = (params.get("bold-tx-status") || "").toUpperCase();
+      const reference = params.get("bold-order-id") || "";
 
       const icon    = document.getElementById("icon");
       const titulo  = document.getElementById("titulo");
@@ -178,7 +179,7 @@
           "Tu pago fue procesado exitosamente. Pronto la institución educativa confirmará los detalles de tu pedido.";
         badge.textContent = "Pago aprobado";
         badge.className = "badge-status success";
-      } else if (status === "DECLINED" || status === "VOIDED" || status === "ERROR") {
+      } else if (status === "REJECTED" || status === "FAILED" || status === "ERROR") {
         icon.textContent = "❌";
         icon.className = "icon-circle error";
         titulo.textContent = "El pago no fue completado";

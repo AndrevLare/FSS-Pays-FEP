@@ -9,6 +9,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="index.css" />
+    <script src="https://checkout.bold.co/library/boldPaymentButton.js"></script>
   </head>
   <body>
     <div class="header">
@@ -130,10 +131,13 @@
           <span id="btn-texto">Continuar al pago →</span>
         </button>
         <p class="nota">
-          Será redirigido a la pasarela de pago segura de Wompi
+          El pago se procesa de forma segura con Bold, sin salir de esta página
         </p>
       </div>
     </form>
+
+    <!-- Contenedor oculto donde se inyecta el botón de Bold -->
+    <div id="bold-button-container" style="display: none"></div>
     <script src="index.js"></script>
   </body>
 </html>

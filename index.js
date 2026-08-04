@@ -1,6 +1,7 @@
 // ── Configuración ────────────────────────────────────────────────────
 const WORKER_URL = "https://fsspays.jorgitoa0109.workers.dev";
-const WOMPI_PUBLIC_KEY = "pub_prod_pCYteIxWseoT936tmO7MAEcLCodshfkT";
+// Llave de identidad (pública) de Bold
+const BOLD_API_KEY = "1A8CeHXY_vTtYlGwwUBAYGkMjtpOEwYYRatl0nBfOa8";
 const REDIRECT_URL =
   "https://andrevlare.github.io/FSS-Uniform-Form/pago-terminado";
 
@@ -253,26 +254,92 @@ document.getElementById("form").addEventListener("submit", async (e) => {
       throw new Error(error || "Error del servidor");
     }
 
-    const { reference, amount, signature } = await res.json();
+    // El Worker debe devolver el monto SIN centavos y el hash de integridad
+    // de Bold: SHA256(orderId + amount + currency + LlaveSecreta).
+    const { orderId, amount, currency, integritySignature } = await res.json();
 
-    // Redirigir al Web Checkout de Wompi
-    const params = new URLSearchParams({
-      "public-key": WOMPI_PUBLIC_KEY,
-      currency: "COP",
-      "amount-in-cents": amount,
-      reference: reference,
-      "signature:integrity": signature,
-      "redirect-url": REDIRECT_URL,
-    });
-
-    window.location.href = `https://checkout.wompi.co/p/?${params}`;
+    // Abrir la pasarela de Bold (Embedded Checkout) con los datos de la venta
+    abrirCheckoutBold({ orderId, amount, currency, integritySignature, datos });
   } catch (err) {
     alert(`Error: ${err.message}. Por favor intente de nuevo.`);
-    btn.disabled = false;
-    spinner.style.display = "none";
-    texto.textContent = "Continuar al pago →";
+    restaurarBoton();
   }
 });
+
+// ── Checkout de Bold ─────────────────────────────────────────────────
+function restaurarBoton() {
+  const btn = document.getElementById("btn-submit");
+  const spinner = document.getElementById("spinner");
+  const texto = document.getElementById("btn-texto");
+  btn.disabled = false;
+  spinner.style.display = "none";
+  texto.textContent = "Continuar al pago →";
+}
+
+function abrirCheckoutBold({
+  orderId,
+  amount,
+  currency,
+  integritySignature,
+  datos,
+}) {
+  const container = document.getElementById("bold-button-container");
+  container.innerHTML = "";
+
+  // Datos del comprador para precargar el formulario de pago de Bold
+  const customerData = JSON.stringify({
+    email: datos.email,
+    fullName: datos.parent_name,
+    phone: datos.phone,
+    dialCode: "+57",
+    documentNumber: datos.identification,
+    documentType: "CC",
+  });
+  const billingAddress = JSON.stringify({
+    address: datos.direction,
+    country: "CO",
+  });
+
+  const script = document.createElement("script");
+  script.setAttribute("data-bold-button", "dark-L");
+  script.setAttribute("data-api-key", BOLD_API_KEY);
+  script.setAttribute("data-order-id", orderId);
+  script.setAttribute("data-currency", currency || "COP");
+  script.setAttribute("data-amount", amount);
+  script.setAttribute("data-integrity-signature", integritySignature);
+  script.setAttribute("data-redirection-url", REDIRECT_URL);
+  script.setAttribute("data-description", datos.concept);
+  script.setAttribute("data-render-mode", "embedded");
+  script.setAttribute("data-customer-data", customerData);
+  script.setAttribute("data-billing-address", billingAddress);
+  container.appendChild(script);
+
+  // Bold renderiza un <button> tras el script; lo pulsamos para abrir el modal
+  esperarBotonBold(container).then((boldBtn) => {
+    if (boldBtn) {
+      boldBtn.click();
+    } else {
+      alert("No se pudo abrir la pasarela de pago. Intente de nuevo.");
+    }
+    restaurarBoton();
+  });
+}
+
+function esperarBotonBold(container, intentos = 50) {
+  return new Promise((resolve) => {
+    let n = 0;
+    const timer = setInterval(() => {
+      const boldBtn = container.querySelector("button");
+      if (boldBtn) {
+        clearInterval(timer);
+        resolve(boldBtn);
+      } else if (++n >= intentos) {
+        clearInterval(timer);
+        resolve(null);
+      }
+    }, 100);
+  });
+}
 
 // ── Inicio ───────────────────────────────────────────────────────────
 document
