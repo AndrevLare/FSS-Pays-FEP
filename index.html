@@ -9,7 +9,12 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="index.css" />
-    <script src="https://checkout.bold.co/library/boldPaymentButton.js"></script>
+    <!--
+      La librería de Bold NO se carga aquí a propósito.
+      Se inyecta desde index.js junto con el script del botón: si se carga
+      antes, escanea el DOM cuando el botón todavía no existe y nunca lo
+      renderiza.
+    -->
   </head>
   <body>
     <div class="header">
@@ -70,7 +75,7 @@
               />
             </div>
             <div class="field full">
-              <label>Cedula de ciudadanía</label>
+              <label>Cédula de ciudadanía</label>
               <input
                 id="cedula"
                 type="number"
@@ -97,12 +102,12 @@
         <!-- Tratamiento de datos -->
         <div class="card">
           <div class="card-title">
-            Tratamiendo de datos Y envio del formulario
+            Tratamiento de datos y envío del formulario
           </div>
           <div class="fields">
             <div class="field full">
               <label class="terminos-label">
-                <input type="checkbox" id="terminos" required />
+                <input type="checkbox" id="terminos-produccion" required />
                 <span
                   >Confirmo la veracidad de los datos y autorizo la producción
                   del uniforme con los datos proporcionados. Entiendo que el
@@ -112,7 +117,7 @@
                 >
               </label>
               <label class="terminos-label">
-                <input type="checkbox" id="terminos" required />
+                <input type="checkbox" id="terminos-datos" required />
                 <span>Acepto el tratamiento de mis datos personales.</span>
               </label>
             </div>
@@ -136,8 +141,16 @@
       </div>
     </form>
 
-    <!-- Contenedor oculto donde se inyecta el botón de Bold -->
-    <div id="bold-button-container" style="display: none"></div>
+    <!--
+      Contenedor del botón de Bold. Va fuera de pantalla en lugar de
+      display:none, porque un elemento oculto puede no renderizarse ni
+      recibir el click programático.
+    -->
+    <div
+      id="bold-button-container"
+      style="position: absolute; left: -9999px; top: 0"
+    ></div>
+
     <script src="index.js"></script>
   </body>
 </html>
