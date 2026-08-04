@@ -309,7 +309,7 @@ function abrirCheckoutBold({
   script.setAttribute("data-api-key", BOLD_API_KEY);
   script.setAttribute("data-order-id", orderId);
   script.setAttribute("data-currency", currency || "COP");
-  script.setAttribute("data-amount", amount);
+  script.setAttribute("data-amount", amount * 100);
   script.setAttribute("data-integrity-signature", integritySignature);
   script.setAttribute("data-redirection-url", REDIRECT_URL);
   script.setAttribute("data-description", datos.concept);
