@@ -333,7 +333,11 @@ function esperarBotonBold(container, intentos = 50) {
   return new Promise((resolve) => {
     let n = 0;
     const timer = setInterval(() => {
-      const boldBtn = container.querySelector("button");
+      // Bold renderiza un custom element <bold-payment-button> y monta el
+      // botón real dentro de su Shadow DOM.
+      const host = container.querySelector("bold-payment-button");
+      const boldBtn = host?.shadowRoot?.querySelector("button");
+
       if (boldBtn) {
         clearInterval(timer);
         resolve(boldBtn);
