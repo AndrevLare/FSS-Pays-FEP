@@ -2,6 +2,7 @@
 const WORKER_URL = "https://fsspays.jorgitoa0109.workers.dev";
 // Llave de identidad (pública) de Bold
 const BOLD_API_KEY = "1A8CeHXY_vTtYlGwwUBAYGkMjtpOEwYYRatl0nBfOa8";
+const BOLD_LIBRARY = "https://checkout.bold.co/library/boldPaymentButton.js";
 const REDIRECT_URL =
   "https://andrevlare.github.io/FSS-Uniform-Form/pago-terminado";
 
@@ -254,8 +255,8 @@ document.getElementById("form").addEventListener("submit", async (e) => {
       throw new Error(error || "Error del servidor");
     }
 
-    // El Worker debe devolver el monto SIN centavos y el hash de integridad
-    // de Bold: SHA256(orderId + amount + currency + LlaveSecreta).
+    // El Worker devuelve el monto en pesos (Bold no usa centavos) y el hash
+    // de integridad: SHA256(orderId + amount + currency + LlaveSecreta).
     const { orderId, amount, currency, integritySignature } = await res.json();
 
     // Abrir la pasarela de Bold (Embedded Checkout) con los datos de la venta
@@ -301,6 +302,9 @@ function abrirCheckoutBold({
   });
 
   const script = document.createElement("script");
+  // La librería se carga junto con el botón: si se carga antes (en el <head>),
+  // escanea el DOM cuando este script todavía no existe y no lo renderiza.
+  script.src = BOLD_LIBRARY;
   script.setAttribute("data-bold-button", "dark-L");
   script.setAttribute("data-api-key", BOLD_API_KEY);
   script.setAttribute("data-order-id", orderId);
