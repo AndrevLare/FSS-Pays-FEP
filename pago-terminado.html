@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Resultado del pago — Uniformes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=Instrument+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -18,22 +20,29 @@
       }
 
       :root {
-        --navy: #1b3a5c;
-        --teal: #0d7f6e;
-        --teal-lt: #e6f4f1;
-        --red: #c0392b;
-        --red-lt: #fdecea;
-        --yellow: #b45309;
-        --yellow-lt: #fef3c7;
-        --bg: #eef2f7;
-        --card: #ffffff;
-        --border: #d0d9e4;
-        --text: #1a2332;
-        --muted: #5a6a7e;
+        --font-display: "Fraunces", serif;
+        --font-body: "Instrument Sans", sans-serif;
+
+        --navy: #16233d;
+        --accent: #c2703d;
+        --accent-dark: #8a4c26;
+        --accent-soft: #f3e3d3;
+        --success: #2f7d5f;
+        --success-soft: #e4f1ec;
+        --danger: #c0392b;
+        --danger-soft: #fbeae7;
+        --pending: #b45309;
+        --pending-soft: #fdf1de;
+
+        --bg: #f6f3ec;
+        --surface: #ffffff;
+        --border: #e5ded0;
+        --text: #211d18;
+        --muted: #6b6459;
       }
 
       body {
-        font-family: "Nunito", sans-serif;
+        font-family: var(--font-body);
         background: var(--bg);
         color: var(--text);
         min-height: 100vh;
@@ -45,37 +54,45 @@
       }
 
       .wrap {
-        max-width: 500px;
+        max-width: 460px;
         width: 100%;
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        gap: 18px;
       }
 
       .icon-circle {
-        width: 80px;
-        height: 80px;
+        width: 76px;
+        height: 76px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 40px;
-        margin: 0 auto 8px;
+        font-size: 36px;
+        margin: 0 auto 6px;
       }
-      .icon-circle.success { background: var(--teal-lt); }
-      .icon-circle.error   { background: var(--red-lt); }
-      .icon-circle.pending { background: var(--yellow-lt); }
+      .icon-circle.success {
+        background: var(--success-soft);
+      }
+      .icon-circle.error {
+        background: var(--danger-soft);
+      }
+      .icon-circle.pending {
+        background: var(--pending-soft);
+      }
 
       .card {
-        background: var(--card);
+        background: var(--surface);
         border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 32px 24px;
+        border-radius: 18px;
+        padding: 34px 26px;
         text-align: center;
+        box-shadow: 0 1px 2px rgba(33, 29, 24, 0.04), 0 8px 24px -14px rgba(33, 29, 24, 0.14);
       }
 
       .card h1 {
-        font-size: 22px;
+        font-family: var(--font-display);
+        font-size: 23px;
         font-weight: 700;
         color: var(--navy);
         margin-bottom: 10px;
@@ -92,7 +109,7 @@
         border: 1px solid var(--border);
         border-radius: 10px;
         padding: 12px 16px;
-        margin-top: 20px;
+        margin-top: 22px;
         font-size: 13px;
         color: var(--muted);
       }
@@ -106,33 +123,48 @@
 
       .badge-status {
         display: inline-block;
-        padding: 4px 14px;
-        border-radius: 20px;
-        font-size: 12px;
+        padding: 5px 14px;
+        border-radius: 999px;
+        font-size: 11.5px;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
         margin-top: 16px;
       }
-      .badge-status.success { background: var(--teal-lt); color: var(--teal); }
-      .badge-status.error   { background: var(--red-lt);  color: var(--red);  }
-      .badge-status.pending { background: var(--yellow-lt); color: var(--yellow); }
+      .badge-status.success {
+        background: var(--success-soft);
+        color: var(--success);
+      }
+      .badge-status.error {
+        background: var(--danger-soft);
+        color: var(--danger);
+      }
+      .badge-status.pending {
+        background: var(--pending-soft);
+        color: var(--pending);
+      }
 
       .btn-back {
         display: block;
         text-align: center;
-        background: var(--teal);
+        background: var(--accent);
         color: #fff;
         border: none;
         border-radius: 12px;
         padding: 14px;
+        min-height: 48px;
         font-size: 15px;
         font-weight: 700;
-        font-family: "Nunito", sans-serif;
+        font-family: var(--font-body);
         text-decoration: none;
         transition: background 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-      .btn-back:hover { background: #0a6b5c; }
+      .btn-back:hover {
+        background: var(--accent-dark);
+      }
 
       .nota {
         text-align: center;
@@ -148,7 +180,7 @@
         <h1 id="titulo"></h1>
         <p id="mensaje"></p>
         <span class="badge-status" id="badge"></span>
-        <div class="ref-box" id="ref-box" style="display:none">
+        <div class="ref-box" id="ref-box" style="display: none">
           Referencia del pedido
           <strong id="ref-value"></strong>
         </div>
@@ -164,12 +196,12 @@
       const status = (params.get("bold-tx-status") || "").toUpperCase();
       const reference = params.get("bold-order-id") || "";
 
-      const icon    = document.getElementById("icon");
-      const titulo  = document.getElementById("titulo");
+      const icon = document.getElementById("icon");
+      const titulo = document.getElementById("titulo");
       const mensaje = document.getElementById("mensaje");
-      const badge   = document.getElementById("badge");
-      const refBox  = document.getElementById("ref-box");
-      const refVal  = document.getElementById("ref-value");
+      const badge = document.getElementById("badge");
+      const refBox = document.getElementById("ref-box");
+      const refVal = document.getElementById("ref-value");
 
       if (status === "APPROVED") {
         icon.textContent = "✅";
@@ -179,7 +211,11 @@
           "Tu pago fue procesado exitosamente. Pronto la institución educativa confirmará los detalles de tu pedido.";
         badge.textContent = "Pago aprobado";
         badge.className = "badge-status success";
-      } else if (status === "REJECTED" || status === "FAILED" || status === "ERROR") {
+      } else if (
+        status === "REJECTED" ||
+        status === "FAILED" ||
+        status === "ERROR"
+      ) {
         icon.textContent = "❌";
         icon.className = "icon-circle error";
         titulo.textContent = "El pago no fue completado";
@@ -187,13 +223,21 @@
           "Tu transacción fue rechazada o cancelada. Puedes intentarlo de nuevo con otro método de pago.";
         badge.textContent = "Pago rechazado";
         badge.className = "badge-status error";
-      } else {
+      } else if (status === "PENDING") {
         icon.textContent = "⏳";
         icon.className = "icon-circle pending";
         titulo.textContent = "Pago en proceso";
         mensaje.textContent =
-          "Tu pago está siendo verificado. Esto puede tardar unos minutos. Guarda tu referencia por si necesitas consultar el estado.";
+          "Tu pago está siendo verificado (algunos métodos, como PSE, tardan unos minutos). Guarda tu referencia por si necesitas consultar el estado.";
         badge.textContent = "Pendiente";
+        badge.className = "badge-status pending";
+      } else {
+        icon.textContent = "🧾";
+        icon.className = "icon-circle pending";
+        titulo.textContent = "Pedido recibido";
+        mensaje.textContent =
+          "Estamos confirmando el estado de tu pago. Si tienes dudas, contacta a la institución educativa con tu referencia de pedido.";
+        badge.textContent = "En revisión";
         badge.className = "badge-status pending";
       }
 

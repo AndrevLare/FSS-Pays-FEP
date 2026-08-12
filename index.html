@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pedido de Uniformes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500&family=Instrument+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="index.css" />
@@ -18,23 +20,38 @@
   </head>
   <body>
     <div class="header">
-      <h1>🎒 Pedido de Uniformes</h1>
+      <span class="eyebrow">FSS Uniformes</span>
+      <h1>Pedido de uniformes</h1>
       <p>
-        Complete los datos. Puede agregar varios estudiantes en un solo pedido.
+        Completa los datos del pedido. Puedes agregar varios estudiantes en
+        una sola compra.
       </p>
     </div>
 
-    <form id="form">
+    <form id="form" novalidate>
       <div class="wrap">
         <!-- Selección de colegio -->
         <div class="card">
           <div class="card-title">Colegio</div>
           <div class="fields">
             <div class="field full">
-              <label>Selecciona el colegio</label>
-              <select id="colegio" required>
-                <option value="" disabled selected>Cargando colegios...</option>
+              <label for="colegio">Selecciona el colegio</label>
+
+              <div class="skeleton-select" id="colegio-skeleton"></div>
+
+              <select id="colegio" hidden>
+                <option value="" disabled selected>
+                  Selecciona el colegio
+                </option>
               </select>
+              <span class="field-error" id="colegio-error"></span>
+
+              <div class="catalog-error" id="catalog-error" hidden role="alert">
+                <p>No pudimos cargar el catálogo de colegios.</p>
+                <button type="button" class="btn-retry" id="btn-retry-catalog">
+                  Reintentar
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -44,44 +61,44 @@
           <div class="card-title">Datos del acudiente</div>
           <div class="fields">
             <div class="field full">
-              <label>Nombre completo del acudiente</label>
-              <input id="nombre_padre" placeholder="Ej: María López" required />
+              <label for="nombre_padre">Nombre completo del acudiente</label>
+              <input id="nombre_padre" placeholder="Ej: María López" />
+              <span class="field-error"></span>
             </div>
-            <div class="field full">
-              <label>Correo electrónico</label>
-              <input
-                id="email"
-                type="email"
-                placeholder="correo@ejemplo.com"
-                required
-              />
+            <div class="field">
+              <label for="email">Correo electrónico</label>
+              <input id="email" type="email" placeholder="correo@ejemplo.com" />
+              <span class="field-error"></span>
             </div>
-            <div class="field full">
-              <label>Teléfono de contacto</label>
+            <div class="field">
+              <label for="telefono">Teléfono de contacto</label>
               <input
                 id="telefono"
                 type="tel"
+                inputmode="numeric"
                 placeholder="300 000 0000"
-                required
               />
+              <span class="field-error"></span>
             </div>
             <div class="field full">
-              <label>Dirección</label>
+              <label for="direccion">Dirección</label>
               <input
                 id="direccion"
                 type="text"
                 placeholder="Ej: Calle 123 #45-67"
-                required
               />
+              <span class="field-error"></span>
             </div>
-            <div class="field full">
-              <label>Cédula de ciudadanía</label>
+            <div class="field">
+              <label for="cedula">Cédula de ciudadanía</label>
               <input
                 id="cedula"
-                type="number"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]*"
                 placeholder="1234567890"
-                required
               />
+              <span class="field-error"></span>
             </div>
           </div>
         </div>
@@ -94,51 +111,74 @@
           <div class="students-section" id="estudiantes"></div>
           <div style="margin-top: 12px">
             <button type="button" class="btn-add" id="btn-agregar">
-              <span style="font-size: 18px">+</span> Agregar otro estudiante
+              <span aria-hidden="true">+</span> Agregar otro estudiante
             </button>
           </div>
         </div>
 
-        <!-- Tratamiento de datos -->
+        <!-- Observaciones del pedido -->
         <div class="card">
-          <div class="card-title">
-            Tratamiento de datos y envío del formulario
-          </div>
+          <div class="card-title">Observaciones del pedido</div>
           <div class="fields">
             <div class="field full">
-              <label class="terminos-label">
-                <input type="checkbox" id="terminos-produccion" required />
-                <span
-                  >Confirmo la veracidad de los datos y autorizo la producción
-                  del uniforme con los datos proporcionados. Entiendo que el
-                  proceso de producción comenzará una vez se confirme el pedido
-                  y no se podrán hacer cambios en los datos del estudiante
-                  después de este punto.</span
-                >
-              </label>
-              <label class="terminos-label">
-                <input type="checkbox" id="terminos-datos" required />
-                <span>Acepto el tratamiento de mis datos personales.</span>
-              </label>
+              <label for="notas_pedido"
+                >¿Algo que debamos saber para la entrega?
+                <span class="opt">(opcional)</span></label
+              >
+              <textarea
+                id="notas_pedido"
+                rows="3"
+                placeholder="Ej: Entregar antes del 15 de septiembre"
+              ></textarea>
             </div>
           </div>
         </div>
 
-        <!-- Total -->
-        <div class="total-card">
-          <span class="total-label">Total a pagar</span>
-          <span class="total-value" id="total-display">$0</span>
+        <!-- Autorizaciones -->
+        <div class="card">
+          <div class="card-title">Autorizaciones</div>
+          <div class="fields">
+            <div class="field full">
+              <label class="check-label">
+                <input type="checkbox" id="terminos-produccion" />
+                <span
+                  >Confirmo que los datos son correctos y autorizo iniciar la
+                  producción del uniforme. Una vez confirmado el pedido, ya no
+                  podré modificar los datos del estudiante.</span
+                >
+              </label>
+              <label class="check-label">
+                <input type="checkbox" id="terminos-datos" />
+                <span
+                  >Acepto que mis datos personales se usen para procesar este
+                  pedido.</span
+                >
+              </label>
+              <span class="field-error" id="autorizaciones-error"></span>
+            </div>
+          </div>
         </div>
-
-        <!-- Enviar -->
-        <button type="submit" class="btn-submit" id="btn-submit">
-          <div class="spinner" id="spinner"></div>
-          <span id="btn-texto">Continuar al pago →</span>
-        </button>
-        <p class="nota">
-          El pago se procesa de forma segura con Bold, sin salir de esta página
-        </p>
       </div>
+
+      <!-- Total, siempre visible -->
+      <div class="total-bar" id="total-bar">
+        <div class="total-info">
+          <span class="total-label">Total a pagar</span>
+          <span class="total-value" id="total-value">$0</span>
+          <span class="total-sub" id="total-sub"
+            >Agrega prendas para ver el total</span
+          >
+          <span class="field-error" id="total-error"></span>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-submit">
+          <span class="spinner" id="spinner"></span>
+          <span id="btn-texto">Pagar →</span>
+        </button>
+      </div>
+      <p class="submit-error" id="submit-error" aria-live="polite"></p>
+      <p class="nota">
+        El pago se procesa de forma segura con Bold, sin salir de esta página.
+      </p>
     </form>
 
     <!--
