@@ -338,7 +338,7 @@ function crearTarjetaEstudiante(numero) {
         <span class="field-error"></span>
       </div>
       <div class="field full">
-        <label>Curso <span class="opt">(opcional)</span></label>
+        <label>Curso</label>
         <input name="curso_${id}" placeholder="Ej: Kinder A">
       </div>
     </div>
@@ -350,7 +350,7 @@ function crearTarjetaEstudiante(numero) {
 
     <div class="add-grupo-wrap" data-add-grupo-wrap hidden>
       <button type="button" class="btn-add-grupo" data-action="toggle-add-grupo">
-        + Agregar grupo
+        + Agregar uniforme
       </button>
       <div class="add-grupo-menu" data-add-grupo-menu hidden></div>
     </div>
