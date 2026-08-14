@@ -4,7 +4,7 @@ const WORKER_URL = "https://fsspays.jorgitoa0109.workers.dev";
 const BOLD_API_KEY = "1A8CeHXY_vTtYlGwwUBAYGkMjtpOEwYYRatl0nBfOa8";
 const BOLD_LIBRARY = "https://checkout.bold.co/library/boldPaymentButton.js";
 const REDIRECT_URL =
-  "https://andrevlare.github.io/FSS-Uniform-Form/pago-terminado";
+  "https://andrevlare.github.io/FSS-Uniform-Form/pago-terminado.html";
 
 // ── Estado ───────────────────────────────────────────────────────────
 // catalog: { colegio: { grupo: { prenda: { talla: precio } } } }
