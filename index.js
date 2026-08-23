@@ -335,7 +335,7 @@ function crearTarjetaEstudiante(numero) {
         <span class="field-error"></span>
       </div>
       <div class="field full">
-        <label>Curso</label>
+        <label>Grupo</label>
         <input name="curso_${id}" placeholder="Ej: Kinder A">
       </div>
     </div>
