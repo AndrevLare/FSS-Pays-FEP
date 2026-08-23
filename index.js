@@ -232,10 +232,7 @@ function crearGrupoCard(colegio, grupo) {
 function filaPrendaHtml(colegio, grupo, prenda) {
   const tallas = getTallas(colegio, grupo, prenda);
   const opciones = tallas
-    .map((t) => {
-      const precio = getPrecio(colegio, grupo, prenda, t);
-      return `<option value="${escapeHtml(t)}">${escapeHtml(t)} — $${precio.toLocaleString("es-CO")}</option>`;
-    })
+    .map((t) => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`)
     .join("");
 
   return `
