@@ -30,24 +30,24 @@
 
     <form id="form" novalidate>
       <div class="wrap">
-        <!-- Selección de institución -->
+        <!-- Selección de colegio -->
         <div class="card">
-          <div class="card-title">Institución</div>
+          <div class="card-title">Colegio</div>
           <div class="fields">
             <div class="field full">
-              <label for="colegio">Selecciona la institución</label>
+              <label for="colegio">Selecciona el colegio</label>
 
               <div class="skeleton-select" id="colegio-skeleton"></div>
 
               <select id="colegio" hidden>
                 <option value="" disabled selected>
-                  Selecciona la institución
+                  Selecciona el colegio
                 </option>
               </select>
               <span class="field-error" id="colegio-error"></span>
 
               <div class="catalog-error" id="catalog-error" hidden role="alert">
-                <p>No pudimos cargar el catálogo de instituciones.</p>
+                <p>No pudimos cargar el catálogo de colegios.</p>
                 <button type="button" class="btn-retry" id="btn-retry-catalog">
                   Reintentar
                 </button>
@@ -128,7 +128,7 @@
               <textarea
                 id="notas_pedido"
                 rows="3"
-                placeholder="Cuentanos..."
+                placeholder="Ej: Entregar antes del 15 de septiembre"
               ></textarea>
             </div>
           </div>
