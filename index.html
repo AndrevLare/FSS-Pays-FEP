@@ -23,7 +23,7 @@
       <span class="eyebrow">FSS Uniformes</span>
       <h1>Pedido de uniformes</h1>
       <p>
-        Completa los datos del pedido. Puedes agregar varios estudiantes en
+        Completa los datos del pedido. Puedes agregar varios uniformes en
         una sola compra.
       </p>
     </div>
@@ -32,22 +32,22 @@
       <div class="wrap">
         <!-- Selección de colegio -->
         <div class="card">
-          <div class="card-title">Colegio</div>
+          <div class="card-title">Institucion</div>
           <div class="fields">
             <div class="field full">
-              <label for="colegio">Selecciona el colegio</label>
+              <label for="colegio">Selecciona la institucion</label>
 
               <div class="skeleton-select" id="colegio-skeleton"></div>
 
               <select id="colegio" hidden>
                 <option value="" disabled selected>
-                  Selecciona el colegio
+                  Selecciona la institucion
                 </option>
               </select>
               <span class="field-error" id="colegio-error"></span>
 
               <div class="catalog-error" id="catalog-error" hidden role="alert">
-                <p>No pudimos cargar el catálogo de colegios.</p>
+                <p>No pudimos cargar el catálogo de intituciones</p>
                 <button type="button" class="btn-retry" id="btn-retry-catalog">
                   Reintentar
                 </button>
@@ -58,10 +58,10 @@
 
         <!-- Datos del acudiente -->
         <div class="card">
-          <div class="card-title">Datos del acudiente</div>
+          <div class="card-title">Datos del responsable</div>
           <div class="fields">
             <div class="field full">
-              <label for="nombre_padre">Nombre completo del acudiente</label>
+              <label for="nombre_padre">Nombre completo del responsable</label>
               <input id="nombre_padre" placeholder="Ej: María López" />
               <span class="field-error"></span>
             </div>
