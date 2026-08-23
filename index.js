@@ -73,9 +73,6 @@ document.addEventListener("change", (e) => {
   if (e.target.id === "colegio") {
     onColegioChange();
   }
-  if (e.target.matches("[data-talla-general]")) {
-    aplicarTallaGeneral(e.target.closest(".grupo-card"), e.target.value);
-  }
   if (e.target.matches("[data-prenda]")) {
     calcularTotal();
     e.target.closest(".student-card")?.querySelector(".card-error")?.remove();
@@ -83,7 +80,7 @@ document.addEventListener("change", (e) => {
 });
 
 document.addEventListener("click", (e) => {
-  // Cierra cualquier menú de "agregar grupo" abierto si el click fue afuera
+  // Cierra cualquier menú de "agregar uniforme" abierto si el click fue afuera
   document.querySelectorAll("[data-add-grupo-menu]").forEach((menu) => {
     if (menu.hidden) return;
     const wrap = menu.closest(".add-grupo-wrap");
@@ -168,9 +165,7 @@ function actualizarMenuAgregarGrupo(card) {
   wrap.hidden = false;
 
   const existentes = new Set(
-    Array.from(card.querySelectorAll(".grupo-card")).map(
-      (g) => g.dataset.grupo,
-    ),
+    Array.from(card.querySelectorAll(".grupo-card")).map((g) => g.dataset.grupo),
   );
   const disponibles = getGrupos(colegio).filter((g) => !existentes.has(g));
 
@@ -206,20 +201,11 @@ function crearGrupoCard(colegio, grupo) {
   div.dataset.grupo = grupo;
 
   const prendas = getPrendas(colegio, grupo);
-  const tallasUnion = [
-    ...new Set(prendas.flatMap((p) => getTallas(colegio, grupo, p))),
-  ];
 
   div.innerHTML = `
     <div class="grupo-header">
       <span class="grupo-title">${escapeHtml(grupo)}</span>
-      <div class="grupo-header-right">
-        <select class="talla-general" data-talla-general aria-label="Talla general para ${escapeHtml(grupo)}">
-          <option value="">Talla…</option>
-          ${tallasUnion.map((t) => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("")}
-        </select>
-        <button type="button" class="btn-remove-grupo" data-action="eliminar-grupo" aria-label="Quitar ${escapeHtml(grupo)}">✕</button>
-      </div>
+      <button type="button" class="btn-remove-grupo" data-action="eliminar-grupo" aria-label="Quitar ${escapeHtml(grupo)}">✕</button>
     </div>
     <div class="prendas-list">
       ${prendas.map((p) => filaPrendaHtml(colegio, grupo, p)).join("")}
@@ -246,21 +232,6 @@ function filaPrendaHtml(colegio, grupo, prenda) {
       <input type="text" class="nota-input" data-nota hidden placeholder="¿Algo especial para esta prenda?" />
     </div>
   `;
-}
-
-// La talla general solo aplica a las prendas del grupo que tienen esa talla.
-// Si una prenda no la tiene, queda sin seleccionar: el padre debe elegirla.
-function aplicarTallaGeneral(grupoEl, talla) {
-  const colegio = getColegioSeleccionado();
-  const grupo = grupoEl.dataset.grupo;
-
-  grupoEl.querySelectorAll("[data-prenda]").forEach((sel) => {
-    const prenda = sel.dataset.prenda;
-    const tallas = getTallas(colegio, grupo, prenda);
-    sel.value = tallas.includes(talla) ? talla : "";
-  });
-
-  calcularTotal();
 }
 
 // ── Total ────────────────────────────────────────────────────────────
@@ -341,7 +312,7 @@ function crearTarjetaEstudiante(numero) {
     </div>
 
     <div class="grupos-empty" data-grupos-empty>
-      Selecciona el colegio para ver los grupos disponibles
+      Selecciona el colegio para ver los uniformes disponibles
     </div>
     <div class="grupos-list" data-grupos hidden></div>
 
@@ -404,7 +375,9 @@ function setError(el, mensaje) {
 
 function limpiarErrores() {
   document.querySelectorAll(".field-error").forEach((e) => (e.textContent = ""));
-  document.querySelectorAll(".invalid").forEach((e) => e.classList.remove("invalid"));
+  document
+    .querySelectorAll(".invalid")
+    .forEach((e) => e.classList.remove("invalid"));
   document.querySelectorAll(".card-error").forEach((e) => e.remove());
   document.getElementById("submit-error").textContent = "";
 }
